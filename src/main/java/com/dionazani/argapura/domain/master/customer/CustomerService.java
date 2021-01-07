@@ -111,7 +111,7 @@ public class CustomerService {
 		short isDeleted = 1;
 		CustomerEntity customerEntity = this.customerRepository.getOne(UUID.fromString(id));
 		
-		this.customerRepository.save(customerEntity);
+
 		customerEntity.setIsDeleted(isDeleted);
 		this.customerRepository.save(customerEntity);
 		
