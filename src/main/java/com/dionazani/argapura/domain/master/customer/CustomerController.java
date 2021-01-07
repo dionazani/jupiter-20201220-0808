@@ -84,6 +84,30 @@ public class CustomerController {
 		return responseEntity;
 	}
 	
+	@PutMapping("/delete/{id}")
+	public ResponseEntity<Object> softDelete(@PathVariable String id) {
+		
+		ResponseEntity responseEntity = null;
+		
+		try {
+			ResponseDto response = this.customerService.softDelete(id);
+
+			responseEntity = ResponseEntity
+	                .status(response.getHttpStatusCode())
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .body(response);
+			
+		}
+		catch(Exception ex) {
+			responseEntity = ResponseEntity
+	                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .body(ex.getMessage());
+		}
+		
+		return responseEntity;
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getById(@PathVariable String id) {
 		

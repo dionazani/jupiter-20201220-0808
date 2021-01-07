@@ -1,5 +1,8 @@
 package com.dionazani.argapura.domain.master.customer;
 
+import java.sql.Timestamp;
+import java.util.UUID;
+
 import lombok.Data;
 
 @Data
@@ -17,6 +20,14 @@ public class CustomerDto {
 	
 	private String lastName;
 	
+	private Timestamp createdAt;
+	
+	private String createdBy;
+	
+	private Timestamp updatedAt;
+	
+	private String updatedBy;
+
 	private String bankAccountId;
 	
 }

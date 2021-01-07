@@ -30,6 +30,7 @@ public class CustomerService {
 		customerEntity.setFirstName(dto.getFirstName());
 		customerEntity.setLastName(dto.getLastName());
 		customerEntity.setBankAccountId(UUID.fromString(dto.getBankAccountId()));
+		customerEntity.setCreatedBy(dto.getCreatedBy());
 		this.customerRepository.save(customerEntity);
 		String id = String.valueOf(customerEntity.getId());
 		
@@ -44,8 +45,6 @@ public class CustomerService {
 		response.setData(map);
 		
 		return response;
-
-		
 	}
 	
 	public ResponseDto updateExisting(String id, CustomerDto dto) throws Exception{
@@ -59,6 +58,8 @@ public class CustomerService {
 		customerEntity.setFirstName(dto.getFirstName());
 		customerEntity.setLastName(dto.getLastName());
 		customerEntity.setBankAccountId(UUID.fromString(dto.getBankAccountId()));
+		customerEntity.setUpdatedAt(FormatUtils.getCurrentTimestamp());
+		customerEntity.setUpdatedBy(dto.getUpdatedBy());
 		this.customerRepository.save(customerEntity);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -88,6 +89,8 @@ public class CustomerService {
 			dto.setEmail(customerEntity.get().getEmail());
 			dto.setFirstName(customerEntity.get().getFirstName());
 			dto.setLastName(customerEntity.get().getLastName());
+			dto.setCreatedAt(customerEntity.get().getCreatedAt());
+			dto.setUpdatedAt(customerEntity.get().getUpdatedAt());
 			dto.setBankAccountId(String.valueOf(customerEntity.get().getBankAccountId()));
 		}
 		
@@ -100,6 +103,28 @@ public class CustomerService {
 		
 		return response;
 
+	}
+	
+	public ResponseDto softDelete(String id) {
+		ResponseDto response = new ResponseDto();
 		
+		short isDeleted = 1;
+		CustomerEntity customerEntity = this.customerRepository.getOne(UUID.fromString(id));
+		
+		this.customerRepository.save(customerEntity);
+		customerEntity.setIsDeleted(isDeleted);
+		this.customerRepository.save(customerEntity);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		
+		response = new ResponseDto();
+		response.setHttpStatusCode(200);
+		response.setResponseCode("000");
+		response.setResponseMessage("Success");
+		response.setTimeStamp(FormatUtils.getCurrentTimestamp());
+		response.setData(map);
+		
+		return response;
 	}
 }
